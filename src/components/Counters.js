@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import AddCounter from './AddCounter';
 import Counter from './Counter';
 
 const defaultCounters = [
@@ -18,7 +19,13 @@ const defaultCounters = [
 const Counters = () => {
   const [counters, setCounters] = useState(defaultCounters);
 
-  const setCount = (counter) => {
+  const addCounter = (counter) => {
+    const tempCounters = [...counters];
+    tempCounters.push(counter);
+    setCounters(tempCounters);
+  }
+
+  const add = (counter) => {
     const tempCounters = [...counters];
     const counterIndex = tempCounters.indexOf(counter);
     tempCounters[counterIndex].count++;
@@ -29,19 +36,27 @@ const Counters = () => {
     const tempCounters = [...counters];
     const counterIndex = tempCounters.indexOf(counter);
     tempCounters.splice(counterIndex, 1);
+  }
+ 
+  const subtract = (counter) => {
+    const tempCounters = [...counters];
+    const counterIndex = tempCounters.indexOf(counter);
+    tempCounters[counterIndex].count--;
     setCounters(tempCounters);
   }
 
   return (
     <Container>
+      <AddCounter addCounter={ addCounter } />
       <Row>
       { counters.map(counter => (
         <Col key={ counter.name } md={4}>
         <Counter
           key={ counter.name }
           counter={ counter }
-          add={ setCount }
           remove={ remove }
+          add={ add }
+          subtract={ subtract }
           />
         </Col>
       ))}
